@@ -11,7 +11,6 @@ class CodeClimateStatusCommand(sublime_plugin.TextCommand):
       #thread = CodeClimateAPICall() 
       #threads.apprend(thread)
       #threads.start()
-
   #clear the klasses
     #self.view.klass().clear() #klass or klasses?
   #make codeclimate key object
@@ -28,24 +27,9 @@ class CodeClimateStatusCommand(sublime_plugin.TextCommand):
   #--------------------------------------
     #plugin_settings = sublime.load_settings('CodeClimateStatus.sublime-theme')
 
-    #show grade in gutter with appropriate background color
-
-    # if grade == "A"
-    #   constant = #green #00AA00
-    # elif grade == "B"
-    #   constant = #light_green #80CC00
-    # elif grade == "C"
-    #   constant = #yellow #FFEE00
-    # elif grade == "D"
-    #   constant = #orange #F77700
-    # else #grade == "F"
-    #   constant = #red #EE0000
-
-    grade = "F"
-
+    grade = "A"
     self.view.erase_regions('gutter-grade')
-
-    self.view.add_regions('gutter-grade', [sublime.Region(self.view.text_point(0, 0))], 'constant', '../CodeClimateStatus/img/letter')
+    self.view.add_regions('gutter-grade', [sublime.Region(self.view.text_point(0, 0))], 'constant', self.bookmark_path(grade))
     # self.view.add_regions('gutter-grade-b', [sublime.Region(self.view.text_point(1, 0))], 'constant', '../CodeClimateStatus/img/letterB')
     # self.view.add_regions('gutter-grade-c', [sublime.Region(self.view.text_point(2, 0))], 'constant', '../CodeClimateStatus/img/letterC')
     # self.view.add_regions('gutter-grade-d', [sublime.Region(self.view.text_point(3, 0))], 'constant', '../CodeClimateStatus/img/letterD')
@@ -61,16 +45,13 @@ class CodeClimateStatusCommand(sublime_plugin.TextCommand):
   def bookmark_path(self, grade):
     return '../CodeClimateStatus/img/letter' + grade
 
-  #--------------------------------------
 
 #on_load
-
 # class CodeClimateAPICall(threading.Thread):
 #   def __init__(self, klass, timeout):
 #     self.klass = klass
 #     self.result = None
 #     threading.Thread.__init__(self)
-
 #   def run(self):
 #     try:
 #       url = "http://github.com/api/json"
