@@ -26,14 +26,40 @@ class CodeClimateStatusCommand(sublime_plugin.TextCommand):
       #continue
   #threads = next_threads
   #--------------------------------------
-    plugin_settings = sublime.load_settings('CodeClimateStatus.sublime-theme')
+    #plugin_settings = sublime.load_settings('CodeClimateStatus.sublime-theme')
+
+    #show grade in gutter with appropriate background color
+
+    # if grade == "A"
+    #   constant = #green #00AA00
+    # elif grade == "B"
+    #   constant = #light_green #80CC00
+    # elif grade == "C"
+    #   constant = #yellow #FFEE00
+    # elif grade == "D"
+    #   constant = #orange #F77700
+    # else #grade == "F"
+    #   constant = #red #EE0000
+
+    grade = "F"
+
+    self.view.erase_regions('gutter-grade')
+
+    self.view.add_regions('gutter-grade', [sublime.Region(self.view.text_point(0, 0))], 'constant', '../CodeClimateStatus/img/letter')
+    # self.view.add_regions('gutter-grade-b', [sublime.Region(self.view.text_point(1, 0))], 'constant', '../CodeClimateStatus/img/letterB')
+    # self.view.add_regions('gutter-grade-c', [sublime.Region(self.view.text_point(2, 0))], 'constant', '../CodeClimateStatus/img/letterC')
+    # self.view.add_regions('gutter-grade-d', [sublime.Region(self.view.text_point(3, 0))], 'constant', '../CodeClimateStatus/img/letterD')
 
     klass = "ExampleClass"
-    grade = "A"
-    reasons = "LOW duplication, LOW method complexity, LOW total complexity"
-    status = "<<< CodeClimate Grade for Class, %s: %s ||| Reasons: %s >>>" %(klass, grade, reasons)
+    complexity = "LOW"
+    complexity_per_method = "LOW"
+    duplication = "LOW"
+    churn = "MED"
+    status = "<<< CodeClimate Ratings for Class \"%s\" || Complexity: %s | Complexity/Method: %s | Duplication: %s | Churn: %s || >>>" %(klass, complexity, complexity_per_method, duplication, churn)
     self.view.set_status('code-climate', status)
 
+  def bookmark_path(self, grade):
+    return '../CodeClimateStatus/img/letter' + grade
 
   #--------------------------------------
 
