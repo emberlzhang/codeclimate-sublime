@@ -1,5 +1,13 @@
 import sublime, sublime_plugin, threading, json
 
+class CodeClimateStatusListener(sublime_plugin.EventListener):
+  #start getting CodeClimate ratings when file loads
+  def on_load(self, view):
+    #TODO: change to 'source.ruby' when everything else works
+    if 'text.plain' not in view.scope_name(0):
+      return
+    view.run_command('code_climate_status')
+
 class CodeClimateStatusCommand(sublime_plugin.TextCommand):
   def run(self, edit):
   #--------------------------------------klasses
@@ -27,7 +35,11 @@ class CodeClimateStatusCommand(sublime_plugin.TextCommand):
   #--------------------------------------
     #plugin_settings = sublime.load_settings('CodeClimateStatus.sublime-theme')
 
-    grade = "A"
+    grade = "D"
+    old_gutter_grade = self.view.get_regions('gutter-grade')
+
+    self.view.sel().clear()
+
     self.view.erase_regions('gutter-grade')
     self.view.add_regions('gutter-grade', [sublime.Region(self.view.text_point(0, 0))], 'constant', self.bookmark_path(grade))
     # self.view.add_regions('gutter-grade-b', [sublime.Region(self.view.text_point(1, 0))], 'constant', '../CodeClimateStatus/img/letterB')
@@ -42,11 +54,11 @@ class CodeClimateStatusCommand(sublime_plugin.TextCommand):
     status = "<<< CodeClimate Ratings for Class \"%s\" || Complexity: %s | Complexity/Method: %s | Duplication: %s | Churn: %s || >>>" %(klass, complexity, complexity_per_method, duplication, churn)
     self.view.set_status('code-climate', status)
 
+    print old_gutter_grade
+
   def bookmark_path(self, grade):
     return '../CodeClimateStatus/img/letter' + grade
 
-
-#on_load
 # class CodeClimateAPICall(threading.Thread):
 #   def __init__(self, klass, timeout):
 #     self.klass = klass
