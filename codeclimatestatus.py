@@ -1,24 +1,26 @@
 import sublime, sublime_plugin, threading, json, os
 
+
+def find_repo_path(full_name):
+  print os.path.split(full_name)
+  
+
 class CodeClimateStatusListener(sublime_plugin.EventListener):
   #start getting CodeClimate ratings when file loads
   def on_load(self, view):
-    #TODO: change to 'source.ruby' when everything else works
     if 'source.ruby' not in view.scope_name(0):
       return
     view.run_command('code_climate_status')
 
 class CodeClimateStatusCommand(sublime_plugin.TextCommand):
   def run(self, edit):
-  #--------------------------------------klasses
-  #find all klasses in directory
-    #klasses =
-  #make each klass a thread
-    #threads = []
-    #for klass in klasses
-      #thread = CodeClimateAPICall() 
-      #threads.apprend(thread)
-      #threads.start()
+  # determine if current file is a class
+    if not is_valid_klass?
+      return
+  #--------------------------------------make threads for a class
+    #thread = CodeClimateAPICall() 
+    #threads.apprend(thread)
+    #threads.start()
   #clear the klasses
     #self.view.klass().clear() #klass or klasses?
   #make codeclimate key object
@@ -34,6 +36,7 @@ class CodeClimateStatusCommand(sublime_plugin.TextCommand):
   #threads = next_threads
   #--------------------------------------
     #plugin_settings = sublime.load_settings('CodeClimateStatus.sublime-theme')
+
 
     grade = "D"
     old_gutter_grade = self.view.get_regions('gutter-grade')
@@ -60,8 +63,6 @@ class CodeClimateStatusCommand(sublime_plugin.TextCommand):
   def bookmark_path(self, grade):
     return '../CodeClimateStatus/img/letter' + grade
 
-def find_repo_path(full_name):
-  print os.path.split(full_name)
 
 # class CodeClimateAPICall(threading.Thread):
 #   def __init__(self, klass, timeout):
