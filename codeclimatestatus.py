@@ -1,10 +1,10 @@
-import sublime, sublime_plugin, threading, json
+import sublime, sublime_plugin, threading, json, os
 
 class CodeClimateStatusListener(sublime_plugin.EventListener):
   #start getting CodeClimate ratings when file loads
   def on_load(self, view):
     #TODO: change to 'source.ruby' when everything else works
-    if 'text.plain' not in view.scope_name(0):
+    if 'source.ruby' not in view.scope_name(0):
       return
     view.run_command('code_climate_status')
 
@@ -55,9 +55,13 @@ class CodeClimateStatusCommand(sublime_plugin.TextCommand):
     self.view.set_status('code-climate', status)
 
     print old_gutter_grade
+    print find_repo_path()
 
   def bookmark_path(self, grade):
     return '../CodeClimateStatus/img/letter' + grade
+
+def find_repo_path(full_name):
+  print os.path.split(full_name)
 
 # class CodeClimateAPICall(threading.Thread):
 #   def __init__(self, klass, timeout):
